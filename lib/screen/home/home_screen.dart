@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SafeArea(child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18.0),
-        child: Text("Hi"),
+        child: Text("Navin"),
       )),);
 
   }
