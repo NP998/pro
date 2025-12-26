@@ -15,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? password;
   String? phoneNumber;
   bool? isSignUp=true;
+
   Column _signUpWidget(BuildContext context){
     return  Column(
       children: [
@@ -109,59 +110,60 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: 100),
-            Image.asset( 'assets/images/pro.jpeg',width: 150,height: 150,),
-             Expanded(
-                child: isSignUp??false?_signUpWidget(context):_signInWidget(context),
-              ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 100),
+              Image.asset( 'assets/images/pro.jpeg',width: 150,height: 150,),
+               isSignUp??false?_signUpWidget(context):_signInWidget(context),
 
-            Column(
-              children: [
-              Divider(),
-              Text('By continuing, you agree to our T&C and Privacy policy'),
-              SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: LoginButtonWidget(buttonText: "Continue",onPressed: (isClick) async{
-                  if((email?.isNotEmpty??false) && (password?.isNotEmpty??false) && (phoneNumber?.isNotEmpty??false) && isSignUp==true ){
-                    try {
-                      await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                          email: email ?? "", password: password ?? "").then((
-                          value) {
+              Column(
+                children: [
+                Divider(),
+                Text('By continuing, you agree to our T&C and Privacy policy'),
+                SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: LoginButtonWidget(buttonText: "Continue",onPressed: (isClick) async{
+                    if((email?.isNotEmpty??false) && (password?.isNotEmpty??false) && (phoneNumber?.isNotEmpty??false) && isSignUp==true ){
+                      try {
+                        await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                            email: email ?? "", password: password ?? "").then((
+                            value) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("SignUp Successfully")));
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => HomeScreen()));
+                        });
+                      } catch (err) {
+                        print(err);
                         ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("SignUp Successfully")));
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => HomeScreen()));
-                      });
-                    } catch (err) {
-                      print(err);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("wrong email and password")));
+                            SnackBar(content: Text("wrong email and password")));
+                      }
                     }
-                  }
-                  else if((email?.isNotEmpty??false) && (password?.isNotEmpty??false) && isSignUp==false){
-                     try{
-                       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email??"", password: password??"").then((value){
-                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("SignIn Successfully")));
-                         Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
-                       });
-                     }catch(err) {
-                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                           content: Text("wrong email and password")));
-                     }
-                  }
-                  else{
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("please fill all the field")));
-                  }
-                },),
-              ),
-              SizedBox(height: 40),],),
-          ],
+                    else if((email?.isNotEmpty??false) && (password?.isNotEmpty??false) && isSignUp==false){
+                       try{
+                         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email??"", password: password??"").then((value){
+                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("SignIn Successfully")));
+                           Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                         });
+                       }catch(err) {
+                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                             content: Text("wrong email and password")));
+                       }
+                    }
+                    else{
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("please fill all the field")));
+                    }
+                  },),
+                ),
+                SizedBox(height: 40),],),
+            ],
+          ),
         ),
       ),
     );
