@@ -16,7 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String? phoneNumber;
   bool? isSignUp=true;
   Column _signUpWidget(BuildContext context){
-    return  Column(children: [
+    return  Column(
+      children: [
       SizedBox(height: 30),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -113,9 +114,10 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             SizedBox(height: 100),
             Image.asset( 'assets/images/pro.jpeg',width: 150,height: 150,),
-            Expanded(
-              child: isSignUp??false?_signUpWidget(context):_signInWidget(context),
-            ),
+             Expanded(
+                child: isSignUp??false?_signUpWidget(context):_signInWidget(context),
+              ),
+
             Column(
               children: [
               Divider(),
